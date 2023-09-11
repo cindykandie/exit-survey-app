@@ -9,7 +9,7 @@ const LoginScreen = ({ navigation }) => {
     // Check if the email is registered in the main system
     // If authenticated, navigate to the SurveyQuestionsScreen
     if (isEmailValid(email)) {
-      navigation.navigate('SurveyQuestionsScreen');
+      navigation.navigate('IntroScreen');
     } else {
       // Display an error message for invalid email
       alert('Invalid email. Please use your company email.');
@@ -26,7 +26,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleSkipLogin = () => {
     // Navigate to the SurveyQuestionsScreen without authentication
-    navigation.navigate('SurveyQuestionsScreen');
+    navigation.navigate('IntroScreen');
   };
 
   return (

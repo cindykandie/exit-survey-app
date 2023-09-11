@@ -6,7 +6,7 @@ const SubmissionConfirmationScreen = ({ navigation, route }) => {
 
   const handleFinishPress = () => {
     // Navigate to the desired screen after submission (e.g., WelcomeScreen or any other screen)
-    navigation.navigate('WelcomeScreen');
+    navigation.navigate('FeedBackScreen');
   };
 
   return (
