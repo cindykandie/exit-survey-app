@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
+import BottomNav from '../components/BottomNav';
 
 const IntroScreen = ({ navigation }) => {
   const handleMultipleChoicePress = () => {

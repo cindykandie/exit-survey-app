@@ -20,10 +20,10 @@ function BottomNav() {
     { name: 'IntroScreen', icon: 'home' },
     { name: 'Profile', icon: 'person' },
     { name: 'Settings', icon: 'settings' },
-    { name: 'Help', icon: 'Help' },
+    { name: 'HelpScreen', icon: 'help' },
   ];
 
-  const screensToShowBottomNav = ['Intro', 'Profile', 'Settings', 'Help'];
+  const screensToShowBottomNav = ['IntroScreen', 'Profile', 'Settings', 'HelpScreen'];
 
   if (!screensToShowBottomNav.includes(activeRouteName)) {
     return null;
@@ -31,7 +31,7 @@ function BottomNav() {
 
   return (
     <View
-      className={`flex-row justify-between items-center bg-cyan-400 p-2 content-evenly bg-white gap-1 px-2 py-0 pb-3`}
+      className={`flex-row justify-between items-center bg-green-400 p-2 content-evenly bg-white gap-1 px-2 py-0 pb-3`}
       style={{
         position: 'absolute',
         bottom: 0,
@@ -48,19 +48,19 @@ function BottomNav() {
           style={{
             alignItems: 'center',
             borderTopWidth: activeRouteName === tab.name ? 2 : 0,
-            borderColor: activeRouteName === tab.name ? 'cyan' : 'transparent',
+            borderColor: activeRouteName === tab.name ? 'green' : 'transparent',
           }}
         >
           <Ionicons
             name={tab.icon}
             size={24}
-            color={activeRouteName === tab.name ? 'cyan' : 'black'}
+            color={activeRouteName === tab.name ? 'green' : 'black'}
           />
           <Text
             style={{
               fontSize: 12,
-              paddingTop: 1,
-              color: activeRouteName === tab.name ? 'cyan' : 'black',
+              paddingTop: 0,
+              color: activeRouteName === tab.name ? 'green' : 'black',
             }}
           >
             {tab.name}

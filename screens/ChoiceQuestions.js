@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-const MultipleChoiceQuestions = ({ navigation }) => {
-  // Sample survey questions (replace with your actual questions)
-  const surveyQuestions = [
+const SurveyQuestionsScreen = ({ navigation }) => {
+  const surveyStatements = [
     'How satisfied were you with your role?',
     'Did you find the work environment comfortable?',
     'Were you able to achieve your professional development goals?',
@@ -14,106 +14,142 @@ const MultipleChoiceQuestions = ({ navigation }) => {
     'How would you rate the overall workplace culture?',
     'Were you satisfied with the compensation and benefits?',
     'Do you have any suggestions for improvement?',
-    // Add more questions here
   ];
 
-  // State to track user responses
-  const [responses, setResponses] = useState(Array(surveyQuestions.length).fill(''));
+  const [responses, setResponses] = useState(Array(surveyStatements.length).fill(0));
+  const [currentStatementIndex, setCurrentStatementIndex] = useState(0);
 
-  // State to track the current question index
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  // Text descriptions for each rating
+  const ratingTexts = [
+    'Very Bad',
+    'Meh',
+    'Could Have Been Better',
+    'Neutral',
+    'Cant Complain',
+    'I Really Loved It',
+  ];
 
-  // Function to handle user's response to a question
-  const handleResponse = (index, response) => {
+  // Colors for each rating
+  const ratingColors = [
+    'transparent',
+    'maroon',
+    'hotpink',
+    'cyan',
+    'lightblue',
+    'green',
+  ];
+
+  const handleStarRating = (index, rating) => {
     const updatedResponses = [...responses];
-    updatedResponses[index] = response;
+    updatedResponses[index] = rating;
     setResponses(updatedResponses);
   };
 
-  // Function to navigate to the next question
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < surveyQuestions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+  const handlePreviousStatement = () => {
+    if (currentStatementIndex > 0) {
+      setCurrentStatementIndex(currentStatementIndex - 1);
     }
   };
 
-  // Function to navigate to the previous question
-  const handlePreviousQuestion = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
+  const handleNextStatement = () => {
+    if (currentStatementIndex < surveyStatements.length - 1) {
+      setCurrentStatementIndex(currentStatementIndex + 1);
     }
   };
 
-  // Function to handle submission
+  const renderStars = (statementIndex) => {
+    const rating = responses[statementIndex];
+
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        {[1, 2, 3, 4, 5].map((starIndex) => (
+          <TouchableOpacity
+            key={starIndex}
+            onPress={() => handleStarRating(statementIndex, starIndex)}
+          >
+            <Ionicons
+              name="star"
+              size={32}
+              color={starIndex <= rating ? ratingColors[rating] : 'gray'}
+            />
+          </TouchableOpacity>
+        ))}
+      </View>
+    );
+  };
+
   const handleSubmit = () => {
-    // Check if all questions are answered
-    if (responses.every((response) => response !== '')) {
-      // Navigate to the SubmissionConfirmationScreen and pass the responses
+    if (responses.every((rating) => rating > 0)) {
+      // All statements have been rated
+      // You can navigate to the next screen or perform other actions here
       navigation.navigate('SubmissionConfirmationScreen', { responses });
     } else {
-      // Display an alert or message indicating that all questions must be answered
-      alert('Please answer all questions before submitting.');
+      // Display an alert or message indicating that all statements must be rated
+      alert('Please rate all statements before proceeding.');
     }
   };
 
   return (
-    <View className="flex items-center justify-center px-4">
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20 }}>
       <Image
         source={require('../assets/images/questions.png')}
-        className="w-[75%] h-[40%] mb-5 rounded-3xl p-4"
+        style={{ width: '75%', height: '30%', marginBottom: 20, borderRadius: 50 }}
       />
-      <Text className="text-base mb-2">
-        Question {currentQuestionIndex + 1} of {surveyQuestions.length}
+      <Text style={{ fontSize: 16, marginBottom: 20 }}>
+        Statement {currentStatementIndex + 1} of {surveyStatements.length}
       </Text>
-      <Text className="text-xl font-bold mb-5">
-        {surveyQuestions[currentQuestionIndex]}
+      <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>
+        {surveyStatements[currentStatementIndex]}
       </Text>
-      {/* Display response options/buttons */}
-      <TouchableOpacity
-        className="bg-blue-500 py-2 px-4 rounded mb-2"
-        onPress={() => handleResponse(currentQuestionIndex, 'Option A')}
-      >
-        <Text className="text-white font-bold">Option A</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        className="bg-blue-500 py-2 px-4 rounded mb-2"
-        onPress={() => handleResponse(currentQuestionIndex, 'Option B')}
-      >
-        <Text className="text-white font-bold">Option B</Text>
-      </TouchableOpacity>
-      {/* Add more response options/buttons as needed */}
-      <View className="flex flex-row justify-between w-full mb-2">
+      <Text style={{ fontSize: 16, color: ratingColors[responses[currentStatementIndex]] }}>
+        {ratingTexts[responses[currentStatementIndex]]}
+      </Text>
+      {renderStars(currentStatementIndex)}
+      <View style={{ flexDirection: 'row', marginTop: 20 }}>
         <TouchableOpacity
-          className={`bg-blue-500 py-2 px-4 rounded ${
-            currentQuestionIndex === 0 ? 'opacity-50' : ''
-          }`}
-          onPress={handlePreviousQuestion}
-          disabled={currentQuestionIndex === 0}
+          style={{
+            backgroundColor: 'blue',
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            borderRadius: 5,
+            marginRight: 20,
+            display: currentStatementIndex === 0 ? 'none' : 'flex',
+          }}
+          onPress={handlePreviousStatement}
         >
-          <Text className="text-white font-bold">Previous</Text>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Previous</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className={`bg-blue-500 py-2 px-4 rounded ${
-            currentQuestionIndex === surveyQuestions.length - 1 ? 'opacity-50' : ''
-          }`}
-          onPress={handleNextQuestion}
-          disabled={currentQuestionIndex === surveyQuestions.length - 1}
+          style={{
+            backgroundColor: 'green',
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            borderRadius: 5,
+            display: currentStatementIndex === surveyStatements.length - 1 ? 'flex' : 'flex',
+          }}
+          onPress={handleNextStatement}
         >
-          <Text className="text-white font-bold">Next</Text>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Next</Text>
         </TouchableOpacity>
       </View>
-      {/* Submit button */}
       <TouchableOpacity
-        className={`bg-green-500 py-2 px-4 rounded ${
-          responses.includes('') ? 'opacity-50' : ''
-        }`}
+        style={{
+          backgroundColor: responses[currentStatementIndex] === 0 ? 'gray' : 'blue',
+          paddingVertical: 10,
+          paddingHorizontal: 20,
+          borderRadius: 5,
+          marginTop: 20,
+          display:
+            currentStatementIndex === surveyStatements.length - 1 ? 'flex' : 'flex',
+        }}
         onPress={handleSubmit}
-        disabled={responses.includes('')}
+        disabled={responses[currentStatementIndex] === 0}
       >
-        <Text className="text-white font-bold">Submit</Text>
+        <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Submit</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default MultipleChoiceQuestions;
+export default SurveyQuestionsScreen;
+
