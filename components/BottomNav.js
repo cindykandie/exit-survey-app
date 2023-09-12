@@ -17,10 +17,10 @@ function BottomNav() {
   };
 
   const tabItems = [
-    { name: 'IntroScreen', icon: 'home' },
-    { name: 'Profile', icon: 'person' },
-    { name: 'Settings', icon: 'settings' },
-    { name: 'HelpScreen', icon: 'help' },
+    { handle:'Home', name: 'IntroScreen', icon: 'home' },
+    { handle:'Profile', name: 'Profile', icon: 'person' },
+    { handle:'Settings', name: 'Settings', icon: 'settings' },
+    { handle:'Help', name: 'HelpScreen', icon: 'help' },
   ];
 
   const screensToShowBottomNav = ['IntroScreen', 'Profile', 'Settings', 'HelpScreen'];
@@ -63,7 +63,7 @@ function BottomNav() {
               color: activeRouteName === tab.name ? 'green' : 'black',
             }}
           >
-            {tab.name}
+            {tab.handle}
           </Text>
         </TouchableOpacity>
       ))}

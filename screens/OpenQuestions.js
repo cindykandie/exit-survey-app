@@ -23,10 +23,8 @@ const OpenEndedQuestions = ({ navigation }) => {
     // 'Were there any specific moments or experiences that significantly influenced your decision to leave?',
     // 'Would you recommend the company as a great place to work to others?',
     // 'Do you have any additional comments or insights you would like to share with us?',
-  
   ];
   
-
   // State to track user responses
   const [responses, setResponses] = useState(Array(surveyQuestions.length).fill(''));
 
